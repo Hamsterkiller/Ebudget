@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/graphic_menu_dyn"
+        android:orderInCategory="100"
+        android:title="@string/graphic_menu_dynamics"/>
+    <item
+        android:id="@+id/graphic_menu_accum"
+        android:orderInCategory="200"
+        android:title="@string/graphic_menu_accumulated"/>
+    <item
+        android:id="@+id/graphic_menu_table"
+        android:orderInCategory="400"
+        android:title="@string/graphic_menu_go_table"/>
+    <item
+        android:id="@+id/barchart_menu"
+        android:orderInCategory="300"
+        android:title="Bar-Chart"/>
+
+</menu>

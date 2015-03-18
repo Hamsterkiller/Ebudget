@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/table_parent_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TableActivity" >
+	<TableLayout
+            android:id="@+id/headerTable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*" >
+    
+    <TableRow
+        android:id="@+id/tableHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" >
+
+        <TextView
+            android:id="@+id/headerText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_span="3"
+            android:gravity="center"
+            android:text="Incomes and Outcomes"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:typeface="serif" >
+        </TextView>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/columnHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/tableHeader" >
+
+        <TextView
+            android:id="@+id/columnDate"
+            android:layout_width="match_parent"
+            android:text="Date"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:typeface="serif" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/columnSum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Sum"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:typeface="serif" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/columnDescr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Description"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:typeface="serif" >
+        </TextView>
+    </TableRow>
+	</TableLayout>
+    <ScrollView
+        android:id="@+id/scrollViewTable"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerTable">
+
+        <TableLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:stretchColumns="*" >
+        </TableLayout>
+    </ScrollView>
+
+</RelativeLayout>

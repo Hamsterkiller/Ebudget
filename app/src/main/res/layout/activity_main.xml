@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_act"
+    style="@style/AppBaseTheme"
+    android:background="@color/dark_grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity" >
+
+    <EditText
+        android:id="@+id/sumField"
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:inputType="numberSigned"
+        android:hint="@string/sum_hint" 
+        android:textColor="@color/green"/>
+
+    <EditText
+        android:id="@+id/descrField"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:inputType="text"
+        android:hint="@string/descr_hint"
+        android:textColor="@color/green" />
+
+    
+    <TextView
+        android:id="@+id/calDesciptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/period_selection"
+        android:textColor="#008000"/>
+    
+    <ScrollView
+        android:id="@+id/scrollViewGeneral"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="15dp"
+        android:layout_weight="1"    
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:id="@+id/dateLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"            
+            android:orientation="vertical">
+
+            <DatePicker
+                android:id="@+id/firstDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"            
+                android:focusable="true"
+                android:animateLayoutChanges="false"
+                android:calendarViewShown="false"
+                android:maxDate="@string/max_date"
+                android:minDate="@string/min_date"
+                android:spinnersShown="true" />
+
+            <DatePicker
+                android:id="@+id/lastDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:animateLayoutChanges="false"
+                android:calendarViewShown="false"
+                android:maxDate="@string/max_date"
+                android:minDate="@string/min_date"
+                android:spinnersShown="true" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/totalSum"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/green" 
+        android:textColor="@color/dark_grey"/>
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/submitButton"
+            style="@style/AppBaseTheme"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:text="@string/submit_button" />
+
+        <Button
+            android:id="@+id/loadButton"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:text="@string/load_button" />
+
+        <Button
+            android:id="@+id/clearButton"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:text="@string/clear_button" />
+    </LinearLayout>
+<Button
+        android:id="@+id/graphicButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:onClick="sendMessage"
+        android:text="@string/graphic_button" />
+</LinearLayout>
