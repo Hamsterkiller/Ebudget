@@ -24,7 +24,7 @@ public class BarGraphicActivity extends ActionBarActivity {
     java.sql.Date date2;
     GraphView barChartByDescr;
     BarGraphSeries grSeries;
-    String[] horlabels;
+    String[] infos;
     StaticLabelsFormatter staticLabelsFormatter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,6 @@ public class BarGraphicActivity extends ActionBarActivity {
         // initializing inOutsAll
         setContentView(R.layout.activity_bargraphic);
         barChartByDescr =  new GraphView(this);
-        barChartByDescr.setTitle("Bar-chart by description");
         Intent intent = getIntent();
         date1 = dconv.convertToSql(intent.getLongExtra("date1", 0l));
         date2 = dconv.convertToSql(intent.getLongExtra("date2", 0l));
@@ -48,39 +47,55 @@ public class BarGraphicActivity extends ActionBarActivity {
             inOutsType=dbmngr.groupNegativeByDescription(date1, date2);
         }
         catch(NullPointerException e){
-            errornote();
-            this.backToPrevAct();
+            errornote("No data was found!");
+            this.invokeMain();
             //e.printStackTrace();
         }
         dbmngr.close();
+
+        // checking if there is more then one X values
         if (inOutsType.length <= 1) {
-            this.backToPrevAct();
-            errornote();
+            errornote("The quantity of X values must be more than 1");
+            this.invokeMain();
+        } else {
+            // creating barChartValues
+            grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
+            grSeries.setSpacing(25);
+            barChartByDescr.addSeries(grSeries);
+            barChartByDescr.setTitle("Outcome");
+            // creating infos of bars
+            infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+
+            // setting BarChart parameters
+            //barChartByDescr.setDisableTouch(false);
+            barChartByDescr.getViewport().setYAxisBoundsManual(true);
+            barChartByDescr.getViewport().setMinY(0);
+            barChartByDescr.getViewport().setMaxY(grSeries.getHighestValueY());
+            barChartByDescr.getViewport().setXAxisBoundsManual(true);
+            barChartByDescr.getViewport().setMinX(-0.5);
+            barChartByDescr.getViewport().setMaxX(grSeries.getHighestValueX() + 0.5);
+            barChartByDescr.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+
+            barChartByDescr.getViewport().setScalable(true);
+            // barChartByDescr.getViewport().setScrollable(true);
+            // inflating the graphView layout
+            addContentView(barChartByDescr, new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
         }
-        // creating barChartValues
-        grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
-        barChartByDescr.addSeries(grSeries);
-        // creating horizontal labels
-        horlabels = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
-        // setting horizontal labels
-        staticLabelsFormatter.setHorizontalLabels(horlabels);
-        // setting BarChart parameters
-        //barChartByDescr.setDisableTouch(false);
-        barChartByDescr.getViewport().setScalable(true);
-        barChartByDescr.getViewport().setScrollable(true);
-        // inflating the graphView layout
-        addContentView(barChartByDescr, new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
 
     }
-    // throw an alert with the message
-    public void errornote(){
-        Toast.makeText(this, "No data was found!", Toast.LENGTH_LONG).show();
+
+
+    /**
+     * throws an alert
+     */
+    public void errornote(String alertStr){
+        Toast.makeText(this, alertStr, Toast.LENGTH_LONG).show();
     }
     // returns to mainActivity
-    public void backToPrevAct() {
-        Intent intent = new Intent(this, GraphicActivity.class);
+    public void invokeMain() {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
@@ -107,18 +122,25 @@ public class BarGraphicActivity extends ActionBarActivity {
             }
             inOutsType=dbmngr.groupPositiveByDescription(date1, date2);
             dbmngr.close();
+
+            // checking if there is more then one X values
             if (inOutsType.length <= 1) {
-                this.backToPrevAct();
-                errornote();
+                this.invokeMain();
+                errornote("The quantity of X values must be more than 1");
+            } else {
+                barChartByDescr.setTitle("Income");
+                grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
+                grSeries.setSpacing(25);
+                barChartByDescr.getViewport().setMinY(0);
+                barChartByDescr.getViewport().setMaxY(grSeries.getHighestValueY());
+                barChartByDescr.getViewport().setMinX(-0.5);
+                barChartByDescr.getViewport().setMaxX(grSeries.getHighestValueX() + 0.5);
+                // creating horizontal labels
+                infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+                barChartByDescr.removeAllSeries();
+                barChartByDescr.addSeries(grSeries);
+
             }
-            barChartByDescr.setTitle("Income");
-            grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
-            barChartByDescr.removeAllSeries();
-            barChartByDescr.addSeries(grSeries);
-            // creating horizontal labels
-            horlabels = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
-            // setting horizontal labels
-            staticLabelsFormatter.setHorizontalLabels(horlabels);
         }
         // Outcome statistics
         if (id == R.id.barchart_menu_negative) {
@@ -133,12 +155,17 @@ public class BarGraphicActivity extends ActionBarActivity {
 
             barChartByDescr.setTitle("Outcome");
             grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
+            grSeries.setSpacing(25);
+            barChartByDescr.getViewport().setMinY(0);
+            barChartByDescr.getViewport().setMaxY(grSeries.getHighestValueY());
+            barChartByDescr.getViewport().setMinX(-0.5);
+            barChartByDescr.getViewport().setMaxX(grSeries.getHighestValueX() + 0.5);
+            // creating horizontal labels
+            infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+
             barChartByDescr.removeAllSeries();
             barChartByDescr.addSeries(grSeries);
-            // creating horizontal labels
-            horlabels = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
-            // setting horizontal labels
-            staticLabelsFormatter.setHorizontalLabels(horlabels);
+
         }
         return super.onOptionsItemSelected(item);
     }

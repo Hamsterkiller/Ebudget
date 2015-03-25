@@ -102,11 +102,13 @@ public class GraphSeriesAdapter {
         return container;
     }
     /**
+     *
      * generating custom data labels
      * @param inOuts array of the data objects InOutSumObj
      * @param maxDateViewPort
      * @param minDateViewPort
      */
+    @Deprecated
     public static String[] generateDateLabels(InOutSumObj[] inOuts, double minDateViewPort, double maxDateViewPort){
         String[] dateLabels;
         DateConverter dc = new DateConverter();

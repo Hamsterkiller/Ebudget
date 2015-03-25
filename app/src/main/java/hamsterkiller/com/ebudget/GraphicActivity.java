@@ -25,7 +25,7 @@ public class GraphicActivity extends ActionBarActivity {
 	java.sql.Date date1;
 	java.sql.Date date2;
 	String[] horlabels;
-    StaticLabelsFormatter staticLabelsFormatter;
+    DateAsXAxisLabelFormatter dateFormatter;
     DateAsXAxisLabelFormatter dateAsXAxisLabelFormatter;
 
 	@Override
@@ -77,12 +77,8 @@ public class GraphicActivity extends ActionBarActivity {
 		// adding GraphViewSeries to GraphView
 		graphicIncome.addSeries(grSeries);
 		// generating custom horizontal labels
-		horlabels = GraphSeriesAdapter.generateDateLabels(inOuts, grSeries.getLowestValueX(), grSeries.getHighestValueX());
-
-		// setting horizontal labels
-		staticLabelsFormatter = new StaticLabelsFormatter(this.graphicIncome);
-        staticLabelsFormatter.setHorizontalLabels(horlabels);
-        graphicIncome.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+        graphicIncome.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
+        graphicIncome.getGridLabelRenderer().setNumHorizontalLabels(4);
 		// setting the number of vertical labels
 		graphicIncome.getGridLabelRenderer().setNumVerticalLabels(11);
 	    graphicIncome.getViewport().setMaxY(Logic.getMaxAbs(Logic.getSumArray(inOuts)));
@@ -129,7 +125,7 @@ public class GraphicActivity extends ActionBarActivity {
 	@Override
 	public void onUserInteraction() {
         horlabels = GraphSeriesAdapter.generateDateLabels(inOuts, grSeries.getLowestValueX(), grSeries.getHighestValueX());
-        staticLabelsFormatter.setHorizontalLabels(horlabels);
+        //staticLabelsFormatter.setHorizontalLabels(horlabels);
 		super.onUserInteraction();
 	}
 
@@ -138,7 +134,7 @@ public class GraphicActivity extends ActionBarActivity {
 		
 		// update the horizontal labels
         horlabels = GraphSeriesAdapter.generateDateLabels(inOuts, grSeries.getLowestValueX(), grSeries.getHighestValueX());
-        staticLabelsFormatter.setHorizontalLabels(horlabels);
+        //staticLabelsFormatter.setHorizontalLabels(horlabels);
 		return super.onTouchEvent(event);
 	}
 
