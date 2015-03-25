@@ -2,12 +2,11 @@ package hamsterkiller.com.ebudget;
 
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Date;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -15,14 +14,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import java.text.ParseException;
-import com.jjoe64.graphview.GraphViewSeries;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
 
 	// object of EbudgetDBmanager
 	final EbudgetDBManager dbmngr = EbudgetDBManager.getInstance(this);

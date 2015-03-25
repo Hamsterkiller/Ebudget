@@ -1,42 +1,46 @@
 package hamsterkiller.com.ebudget;
 
 import java.sql.SQLException;
-import android.app.Activity;
-import android.app.AlertDialog;
+import java.util.Random;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.DragEvent;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
+import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
-public class GraphicActivity extends Activity {
+public class GraphicActivity extends ActionBarActivity {
 	public static InOutSumObj[] inOutsAll;
 	InOutSumObj[] inOuts;
-	DateLineGraphView graphicIncome;
-	GraphViewSeries grSeries;
+	GraphView graphicIncome;
+	LineGraphSeries grSeries;
 	java.sql.Date date1;
 	java.sql.Date date2;
 	String[] horlabels;
+    StaticLabelsFormatter staticLabelsFormatter;
+    DateAsXAxisLabelFormatter dateAsXAxisLabelFormatter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_graphic);
-
+        // DateConverter object
 		DateConverter dconv = new DateConverter();
-		
+        // DateAsAxisLabelFormatter object
+        dateAsXAxisLabelFormatter = new DateAsXAxisLabelFormatter(this);
 		// EbudgetDBmanager
 		final EbudgetDBManager dbmngr = EbudgetDBManager.getInstance(this);
 		// creating LineGraphView object
-		graphicIncome =  new DateLineGraphView(GraphicActivity.this, 
-				"Income/Outcome Dynamics");
+		graphicIncome =  new GraphView(this);
+        graphicIncome.setTitle("Income & Outcome");
 		Intent intent = getIntent();
 		date1 = dconv.convertToSql(intent.getLongExtra("date1", 0l));
 		date2 = dconv.convertToSql(intent.getLongExtra("date2", 0l));
@@ -47,7 +51,7 @@ public class GraphicActivity extends Activity {
 
 			e.printStackTrace();
 		}
-		
+
 		// creating GraphViewSeries object
 		try{
 			inOuts=dbmngr.getDetSumDate(date1, date2);
@@ -59,50 +63,34 @@ public class GraphicActivity extends Activity {
 			//e.printStackTrace();
 
 		}
-		grSeries = new GraphViewSeries(Logic.createListByDay(inOuts));
-		dbmngr.close();
+        dbmngr.close();
+
+        // creating LineGraphSeries Object
+		grSeries = new LineGraphSeries(GraphSeriesAdapter.createListByDay(inOuts));
+
+        // testing...
+        //grSeries = generateSeries();
+
+        // set DrawDataPoints flag
+        //grSeries.setDrawDataPoints(true);
+
 		// adding GraphViewSeries to GraphView
 		graphicIncome.addSeries(grSeries);
 		// generating custom horizontal labels
-		horlabels = Logic.generateDateLabels(inOuts, graphicIncome.getMinX(false), graphicIncome.getMaxX(false));
-		/*if (horlabels[0]=="null"){
-			AlertDialog.Builder builder = new AlertDialog.Builder(
-					GraphicActivity.this);
-			builder.setTitle("��� ������!")
-					.setMessage("�� ��������� ������ ��� ������")
-					.setIcon(R.drawable.alert)
-					.setCancelable(true)
-					.setNegativeButton("��",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int id) {
-
-									dialog.cancel();
-
-								}
-							});
-			AlertDialog alert  = builder.create();
-			alert.show();
-		}*/
+		horlabels = GraphSeriesAdapter.generateDateLabels(inOuts, grSeries.getLowestValueX(), grSeries.getHighestValueX());
 
 		// setting horizontal labels
-		graphicIncome.setHorizontalLabels(horlabels);
+		staticLabelsFormatter = new StaticLabelsFormatter(this.graphicIncome);
+        staticLabelsFormatter.setHorizontalLabels(horlabels);
+        graphicIncome.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 		// setting the number of vertical labels
-		graphicIncome.getGraphViewStyle().setNumVerticalLabels(11);
-		try{
-			graphicIncome.setManualYAxisBounds(Logic.getMaxAbs(Logic.getSumArray(inOuts)), -Logic.getMaxAbs(Logic.getSumArray(inOuts)));
-		}
-		catch(NullPointerException e){
-			errornote();
-			this.invokeMain();
-			//e.printStackTrace();
-		}
-		graphicIncome.setDisableTouch(false);
-		graphicIncome.setScalable(true);
-		graphicIncome.setScrollable(true);
-		grSeries.getStyle().color = 0xff33FF99;
-		((LineGraphView) graphicIncome).setDrawDataPoints(true);
-		
+		graphicIncome.getGridLabelRenderer().setNumVerticalLabels(11);
+	    graphicIncome.getViewport().setMaxY(Logic.getMaxAbs(Logic.getSumArray(inOuts)));
+        graphicIncome.getViewport().setMinY(-Logic.getMaxAbs(Logic.getSumArray(inOuts)));
+        graphicIncome.getViewport().setScalable(true);
+        graphicIncome.getViewport().setScrollable(true);
+		//grSeries.getStyle().color = 0xff33FF99;
+
 		// inflating the graphView layout
 		addContentView(graphicIncome, new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -140,8 +128,8 @@ public class GraphicActivity extends Activity {
 		
 	@Override
 	public void onUserInteraction() {
-		horlabels = Logic.generateDateLabels(inOuts, graphicIncome.getMinX(false), graphicIncome.getMaxX(false));
-		graphicIncome.setHorizontalLabels(horlabels);
+        horlabels = GraphSeriesAdapter.generateDateLabels(inOuts, grSeries.getLowestValueX(), grSeries.getHighestValueX());
+        staticLabelsFormatter.setHorizontalLabels(horlabels);
 		super.onUserInteraction();
 	}
 
@@ -149,8 +137,8 @@ public class GraphicActivity extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
 		
 		// update the horizontal labels
-		horlabels = Logic.generateDateLabels(inOuts, graphicIncome.getMinX(false), graphicIncome.getMaxX(false));
-		graphicIncome.setHorizontalLabels(horlabels);		
+        horlabels = GraphSeriesAdapter.generateDateLabels(inOuts, grSeries.getLowestValueX(), grSeries.getHighestValueX());
+        staticLabelsFormatter.setHorizontalLabels(horlabels);
 		return super.onTouchEvent(event);
 	}
 
@@ -175,26 +163,23 @@ public class GraphicActivity extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.graphic_menu_accum) {
-			grSeries = new GraphViewSeries(Logic.createAccumCashFlowDyn(inOuts));
-			grSeries.getStyle().color = 0xff33FF99;
+            grSeries = new LineGraphSeries(GraphSeriesAdapter.createAccumCashFlowDyn(inOuts));
+			//grSeries.getStyle().color = 0xff33FF99;
 			graphicIncome.removeAllSeries();
 			graphicIncome.addSeries(grSeries);
-			graphicIncome.setManualYAxisBounds(Logic.getMaxAbs(Logic.getMaxFromAccumFlow(inOuts)), -Logic.getMaxAbs(Logic.getMaxFromAccumFlow(inOuts)));
+            graphicIncome.getViewport().setMaxY(Logic.getMaxAbs(Logic.getSumArray(inOuts)));
+            graphicIncome.getViewport().setMinY(-Logic.getMaxAbs(Logic.getSumArray(inOuts)));
+
 			return true;
 		}
 		if (id == R.id.graphic_menu_dyn) {
-			grSeries = new GraphViewSeries(Logic.createListByDay(inOuts));
-			grSeries.getStyle().color = 0xff33FF99;
+            grSeries = new LineGraphSeries(GraphSeriesAdapter.createListByDay(inOuts));
+			//grSeries.getStyle().color = 0xff33FF99;
 			graphicIncome.removeAllSeries();
 			graphicIncome.addSeries(grSeries);
-			try{
-				graphicIncome.setManualYAxisBounds(Logic.getMaxAbs(Logic.getSumArray(inOuts)), -Logic.getMaxAbs(Logic.getSumArray(inOuts)));
-			}
-			catch(NullPointerException e){
-				errornote();
-				this.invokeMain();
-				//e.printStackTrace();
-			}
+            graphicIncome.getViewport().setMaxY(Logic.getMaxAbs(Logic.getSumArray(inOuts)));
+            graphicIncome.getViewport().setMinY(-Logic.getMaxAbs(Logic.getSumArray(inOuts)));
+
 			return true;
 		}
         if (id == R.id.barchart_menu){
@@ -206,5 +191,18 @@ public class GraphicActivity extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+    /**
+     * generating test GraphSeries
+     */
+    public LineGraphSeries generateSeries(){
+        Random rnd = new Random();
+        DataPoint[] dpTest = new DataPoint[10];
+        for (int i=0; i<10; i++){
+            dpTest[i]= new DataPoint(i*1.0d, rnd.nextDouble());
+        }
+        LineGraphSeries testSeries = new LineGraphSeries(dpTest);
+        return testSeries;
+    }
 	
 }

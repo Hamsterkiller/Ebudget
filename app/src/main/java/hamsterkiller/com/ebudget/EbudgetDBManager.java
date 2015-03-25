@@ -254,9 +254,8 @@ public class EbudgetDBManager {
 
 	// updating entry
 	// public boolean updateEntry(long _rowIndex, SampleObject _SampleObject) {
-	// �������� ������ ContentValues �� ������ ������� SampleObject
-	// � ����������� ��� ��� ���������� ������ � �������
-	// return true; // ���� ������� ��������, ����� - false
+
+	// return true;
 	// }
 
 	// SQLiteOpenHelper inner class
@@ -274,15 +273,11 @@ public class EbudgetDBManager {
 		@Override
 		public void onUpgrade(SQLiteDatabase _db, int _oldVersion,
 				int _newVersion) {
-			// ������ ��������� � ������, ������� ��� �������
+			// writing log
 			Log.w("TaskDBAdapter", "Upgrading from version " + _oldVersion
 					+ " to " + _newVersion
 					+ ", which will destroy all old data");
-			// ��������� �� �� ����� ������.
-			// � ���������� ������ ������� ������ ��
-			// � ������ ������� �����.
-			// � �������� ����� ����� �������� � �������������
-			// ������ ���������� � �� ������� �� ������ ������ ������.
+			// deleting existing table and then recreating it empty
 			_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
 			onCreate(_db);
 		}

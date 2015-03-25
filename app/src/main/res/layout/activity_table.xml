@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/table_parent_layout"
     android:layout_width="match_parent"
+    style="@style/Theme.AppCompat.CompactMenu"
     android:layout_height="match_parent"
     tools:context=".TableActivity" >
 	<TableLayout

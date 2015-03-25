@@ -3,21 +3,16 @@ package hamsterkiller.com.ebudget;
 
 
 import java.util.Date;
-
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class TableActivity extends Activity {
+public class TableActivity extends ActionBarActivity {
 	InOutSumObj[] inOutsAll;
 	
 	@Override

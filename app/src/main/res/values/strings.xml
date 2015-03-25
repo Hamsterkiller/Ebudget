@@ -18,7 +18,7 @@
     <string name="graphic_menu_go_table">Table</string>
     <string name="title_activity_table">TableActivity</string>
     <string name="hello_world">Hello world!</string>
-    <string name="undo_button">undo submit!</string>
+    <string name="undo_button">undo last submit</string>
     <string name="sum_hint">Enter sum (+/-)</string>
     <string name="descr_hint">Sum descrition</string>
     <string name="barchart_menu_positive">Income</string>

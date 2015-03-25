@@ -1,20 +1,25 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/graphic_menu_dyn"
         android:orderInCategory="100"
-        android:title="@string/graphic_menu_dynamics"/>
+        android:title="@string/graphic_menu_dynamics"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/graphic_menu_accum"
         android:orderInCategory="200"
-        android:title="@string/graphic_menu_accumulated"/>
+        android:title="@string/graphic_menu_accumulated"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/graphic_menu_table"
         android:orderInCategory="400"
-        android:title="@string/graphic_menu_go_table"/>
+        android:title="@string/graphic_menu_go_table"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/barchart_menu"
         android:orderInCategory="300"
-        android:title="Bar-Chart"/>
+        android:title="Bar-Chart"
+        app:showAsAction="never"/>
 
 </menu>
