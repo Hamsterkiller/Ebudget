@@ -10,9 +10,11 @@ import android.widget.Toast;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPointInterface;
+import com.jjoe64.graphview.series.OnDataPointTapListener;
+import com.jjoe64.graphview.series.Series;
 
 import java.sql.SQLException;
-import java.util.Date;
 
 
 public class BarGraphicActivity extends ActionBarActivity {
@@ -61,10 +63,20 @@ public class BarGraphicActivity extends ActionBarActivity {
             // creating barChartValues
             grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
             grSeries.setSpacing(25);
-            barChartByDescr.addSeries(grSeries);
-            barChartByDescr.setTitle("Outcome");
+            grSeries.setDrawValuesOnTop(true);
             // creating infos of bars
             infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+            // Setting onTapDataPointListener
+            grSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+                @Override
+                public void onTap(Series series, DataPointInterface dataPoint) {
+                    Toast.makeText(getBaseContext(), "Info: "+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            barChartByDescr.addSeries(grSeries);
+            barChartByDescr.setTitle("Outcome");
+
 
             // setting BarChart parameters
             //barChartByDescr.setDisableTouch(false);
@@ -131,12 +143,21 @@ public class BarGraphicActivity extends ActionBarActivity {
                 barChartByDescr.setTitle("Income");
                 grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
                 grSeries.setSpacing(25);
+                grSeries.setDrawValuesOnTop(true);
+                // creating horizontal labels
+                infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+                // Setting onTapDataPointListener
+                grSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+                    @Override
+                    public void onTap(Series series, DataPointInterface dataPoint) {
+                        Toast.makeText(getBaseContext(), "Info: "+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
+                    }
+                });
                 barChartByDescr.getViewport().setMinY(0);
                 barChartByDescr.getViewport().setMaxY(grSeries.getHighestValueY());
                 barChartByDescr.getViewport().setMinX(-0.5);
                 barChartByDescr.getViewport().setMaxX(grSeries.getHighestValueX() + 0.5);
-                // creating horizontal labels
-                infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+
                 barChartByDescr.removeAllSeries();
                 barChartByDescr.addSeries(grSeries);
 
@@ -156,12 +177,21 @@ public class BarGraphicActivity extends ActionBarActivity {
             barChartByDescr.setTitle("Outcome");
             grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
             grSeries.setSpacing(25);
+            grSeries.setDrawValuesOnTop(true);
+            // creating horizontal labels
+            infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+            // Setting onTapDataPointListener
+            grSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
+                @Override
+                public void onTap(Series series, DataPointInterface dataPoint) {
+                    Toast.makeText(getBaseContext(), "Info: "+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
+                }
+            });
             barChartByDescr.getViewport().setMinY(0);
             barChartByDescr.getViewport().setMaxY(grSeries.getHighestValueY());
             barChartByDescr.getViewport().setMinX(-0.5);
             barChartByDescr.getViewport().setMaxX(grSeries.getHighestValueX() + 0.5);
-            // creating horizontal labels
-            infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
+
 
             barChartByDescr.removeAllSeries();
             barChartByDescr.addSeries(grSeries);
