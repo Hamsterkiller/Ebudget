@@ -10,18 +10,29 @@
     <string name="max_date">01/01/2018</string>
     <string name="submit_button">Submit</string>
     <string name="load_button">Saldo</string>
+    <string name="balance_text">Balance: </string>
     <string name="clear_button">Clear History</string>
     <string name="title_activity_graphic">Graphic</string>
     <string name="graphic_button">View dynamics</string>
     <string name="graphic_menu_dynamics">Dynamics</string>
     <string name="graphic_menu_accumulated">Accumulated</string>
     <string name="graphic_menu_go_table">Table</string>
-    <string name="title_activity_table">TableActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_table">Table</string>
     <string name="undo_button">undo last submit</string>
     <string name="sum_hint">Enter sum (+/-)</string>
     <string name="descr_hint">Sum descrition</string>
     <string name="barchart_menu_positive">Income</string>
     <string name="barchart_menu_negative">Outcome</string>
+    <string name="linegraph_title">Income and Outcome</string>
+    <string name="no_data_found">No data found!</string>
+    <string name="warning_dialog_icon">Are you sure?</string>
+    <string name="warning_deletion_msg">Are you sure, you want to delete history?</string>
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="warning_sum_msg">Please, check your sum for mistakes!</string>
+    <string name="more_then_one">The quantity of X values must be more than 1</string>
+    <string name="bar_info_toast">Info: </string>
+    <string name="income_title">Income</string>
+    <string name="outcome_title">Outcome</string>
 
 </resources>

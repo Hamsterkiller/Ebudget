@@ -152,10 +152,10 @@ public class GraphSeriesAdapter {
      */
     public static String[] generateCategoryLabels(InOutSumObj[] inOuts){
         String[] catLabels;
-        // ���� ������� ������ ������
+
         if (inOuts==null){
             catLabels = new String[1];
-            catLabels[0]="null";
+            catLabels[0]=" ";
         } else {
             catLabels = new String[inOuts.length];
             for (int i=0; i<inOuts.length; i++){

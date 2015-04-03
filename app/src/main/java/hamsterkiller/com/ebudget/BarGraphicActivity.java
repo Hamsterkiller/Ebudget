@@ -49,20 +49,21 @@ public class BarGraphicActivity extends ActionBarActivity {
             inOutsType=dbmngr.groupNegativeByDescription(date1, date2);
         }
         catch(NullPointerException e){
-            errornote("No data was found!");
+            errornote(getResources().getString(R.string.no_data_found));
             this.invokeMain();
+            return;
             //e.printStackTrace();
         }
         dbmngr.close();
 
         // checking if there is more then one X values
         if (inOutsType.length <= 1) {
-            errornote("The quantity of X values must be more than 1");
+            errornote(getResources().getString(R.string.more_then_one));
             this.invokeMain();
         } else {
             // creating barChartValues
             grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
-            grSeries.setSpacing(25);
+            grSeries.setSpacing(40);
             grSeries.setDrawValuesOnTop(true);
             // creating infos of bars
             infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
@@ -70,12 +71,12 @@ public class BarGraphicActivity extends ActionBarActivity {
             grSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
                 public void onTap(Series series, DataPointInterface dataPoint) {
-                    Toast.makeText(getBaseContext(), "Info: "+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.bar_info_toast)+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
                 }
             });
 
             barChartByDescr.addSeries(grSeries);
-            barChartByDescr.setTitle("Outcome");
+            barChartByDescr.setTitle(getResources().getString(R.string.outcome_title));
 
 
             // setting BarChart parameters
@@ -138,11 +139,11 @@ public class BarGraphicActivity extends ActionBarActivity {
             // checking if there is more then one X values
             if (inOutsType.length <= 1) {
                 this.invokeMain();
-                errornote("The quantity of X values must be more than 1");
+                errornote(getResources().getString(R.string.more_then_one));
             } else {
-                barChartByDescr.setTitle("Income");
+                barChartByDescr.setTitle(getResources().getString(R.string.income_title));
                 grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
-                grSeries.setSpacing(25);
+                grSeries.setSpacing(40);
                 grSeries.setDrawValuesOnTop(true);
                 // creating horizontal labels
                 infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
@@ -150,7 +151,7 @@ public class BarGraphicActivity extends ActionBarActivity {
                 grSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
                     @Override
                     public void onTap(Series series, DataPointInterface dataPoint) {
-                        Toast.makeText(getBaseContext(), "Info: "+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), getResources().getString(R.string.bar_info_toast)+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
                     }
                 });
                 barChartByDescr.getViewport().setMinY(0);
@@ -174,9 +175,9 @@ public class BarGraphicActivity extends ActionBarActivity {
             inOutsType=dbmngr.groupNegativeByDescription(date1, date2);
             dbmngr.close();
 
-            barChartByDescr.setTitle("Outcome");
+            barChartByDescr.setTitle(getResources().getString(R.string.outcome_title));
             grSeries = new BarGraphSeries(GraphSeriesAdapter.createBarChartValues(inOutsType));
-            grSeries.setSpacing(25);
+            grSeries.setSpacing(40);
             grSeries.setDrawValuesOnTop(true);
             // creating horizontal labels
             infos = GraphSeriesAdapter.generateCategoryLabels(inOutsType);
@@ -184,7 +185,7 @@ public class BarGraphicActivity extends ActionBarActivity {
             grSeries.setOnDataPointTapListener(new OnDataPointTapListener() {
                 @Override
                 public void onTap(Series series, DataPointInterface dataPoint) {
-                    Toast.makeText(getBaseContext(), "Info: "+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getResources().getString(R.string.bar_info_toast)+ dataPoint.getY() + "\n" + infos[(int)dataPoint.getX()], Toast.LENGTH_SHORT).show();
                 }
             });
             barChartByDescr.getViewport().setMinY(0);

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_act"
-    style="@style/Theme.AppCompat.CompactMenu"
+    style="@style/Theme.AppCompat"
     android:background="@color/dark_grey"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,17 +17,21 @@
         android:id="@+id/sumField"
         android:layout_width="250dp"
         android:layout_height="40dp"
-        android:inputType="numberSigned"
-        android:hint="@string/sum_hint" 
+        android:inputType="numberSigned|numberDecimal"
+        android:hint="@string/sum_hint"
+        android:singleLine="true"
+        android:imeOptions="actionNext"
         android:textColor="@color/green"/>
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/descrField"
         android:layout_width="350dp"
         android:layout_height="40dp"
         android:inputType="text"
         android:hint="@string/descr_hint"
-        android:textColor="@color/green" />
+        android:singleLine="true"
+        android:textColor="@color/green"
+        android:imeOptions="actionDone"/>
 
     
     <TextView

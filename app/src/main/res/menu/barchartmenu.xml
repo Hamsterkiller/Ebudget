@@ -5,10 +5,10 @@
         android:id="@+id/barchart_menu_positive"
         android:orderInCategory="100"
         android:title="@string/barchart_menu_positive"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
     <item
         android:id="@+id/barchart_menu_negative"
         android:orderInCategory="100"
         android:title="@string/barchart_menu_negative"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 </menu>

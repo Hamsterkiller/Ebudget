@@ -5,5 +5,5 @@
         android:id="@+id/undo"
         android:orderInCategory="100"
         android:title="@string/undo_button"
-        app:showAsAction="never"/>
+        app:showAsAction="always"/>
 </menu>

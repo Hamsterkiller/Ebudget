@@ -5,21 +5,25 @@
         android:id="@+id/graphic_menu_dyn"
         android:orderInCategory="100"
         android:title="@string/graphic_menu_dynamics"
-        app:showAsAction="never"/>
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_linegraph"/>
     <item
         android:id="@+id/graphic_menu_accum"
         android:orderInCategory="200"
         android:title="@string/graphic_menu_accumulated"
-        app:showAsAction="never"/>
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_accumlinegraphmenu"/>
     <item
         android:id="@+id/graphic_menu_table"
         android:orderInCategory="400"
         android:title="@string/graphic_menu_go_table"
-        app:showAsAction="never"/>
+        app:showAsAction="always"
+        android:icon="@drawable/ic_tablemenualfa"/>
     <item
         android:id="@+id/barchart_menu"
         android:orderInCategory="300"
         android:title="Bar-Chart"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_action_barchart"
+        app:showAsAction="always"/>
 
 </menu>

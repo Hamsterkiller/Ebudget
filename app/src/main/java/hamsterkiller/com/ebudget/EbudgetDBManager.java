@@ -117,6 +117,7 @@ public class EbudgetDBManager {
 		budgetDB.delete(DATABASE_TABLE, KEY_ID + "=(SELECT MAX(" + KEY_ID +") FROM " + DATABASE_TABLE + ")", null);
 	}
 
+
 	// removing all rows
 	public void removeAllRows() {
 		budgetDB.execSQL("delete from " + DATABASE_TABLE);
@@ -126,8 +127,31 @@ public class EbudgetDBManager {
 		
 	}
 
+
+    /**
+     * getting all descriptions
+     */
+    public String[] getAllDescrs(){
+        String[] templates;
+        Cursor c = budgetDB.rawQuery("select " + KEY_DESCR + " from " + DATABASE_TABLE + " group by " + KEY_DESCR, null);
+        if (c.getCount() == 0) {
+            templates = new String[1];
+            templates[0] = "...";
+        }
+        else{
+            templates = new String[c.getCount()];
+            c.moveToFirst();
+            for (int i = 0; i<templates.length; i++){
+                templates[i] = c.getString(0);
+                c.moveToNext();
+            }
+        }
+        return templates;
+    }
+
+
 	// "get all rows between two dates" query
-	public InOutSumObj[] getAllRows(java.sql.Date d1, java.sql.Date d2) {
+	public InOutSumObj[] getAllRows(java.sql.Date d1, java.sql.Date d2) throws NullPointerException{
 		Cursor c = budgetDB.query(false, DATABASE_TABLE, new String[] {
 				KEY_DATE, KEY_SUM, KEY_DESCR }, "date between ? and ?",
 				new String[] { String.valueOf(d1), String.valueOf(d2) }, null,
@@ -147,7 +171,7 @@ public class EbudgetDBManager {
 	}
 
 	// getting row by _rowIndex
-	public InOutSumObj getRow(long _rowIndex) {
+	public InOutSumObj getRow(long _rowIndex) throws NullPointerException{
 
 		String query = "select " + KEY_ID + ", " + KEY_SUM + ", " + KEY_DESCR
 				+ ", " + KEY_DATE + " from " + DATABASE_TABLE + " where "
@@ -161,7 +185,7 @@ public class EbudgetDBManager {
 	}
 
 	// getting determined sums array between two days
-	public float[] getDetSum(java.sql.Date d1, java.sql.Date d2) {
+	public float[] getDetSum(java.sql.Date d1, java.sql.Date d2) throws NullPointerException{
 
 		Cursor c = budgetDB.query(false, DATABASE_TABLE,
 				new String[] { KEY_SUM }, "date between ? and ?", new String[] {
@@ -191,7 +215,7 @@ public class EbudgetDBManager {
 	}
 	
 	// getting determined sums array between two days grouped by day
-	public InOutSumObj[] getDetSumDate(java.sql.Date d1, java.sql.Date d2) {
+	public InOutSumObj[] getDetSumDate(java.sql.Date d1, java.sql.Date d2) throws NullPointerException{
 
 		ArrayList <InOutSumObj> inOutObjs = new ArrayList<InOutSumObj>();
         // grouping query
@@ -214,7 +238,7 @@ public class EbudgetDBManager {
      * @param  d2
      * @return InOutSumObj[]
      */
-    public InOutSumObj[] groupNegativeByDescription(java.sql.Date d1, java.sql.Date d2){
+    public InOutSumObj[] groupNegativeByDescription (java.sql.Date d1, java.sql.Date d2) throws NullPointerException {
         ArrayList <InOutSumObj> inOutObjs = new ArrayList<InOutSumObj>();
         // grouping query
         Cursor c1 = budgetDB.query(false, DATABASE_TABLE, new String[] {KEY_DATE, "SUM("+KEY_SUM+")", KEY_DESCR},  "date between ? and ? and " + KEY_SUM + "<0",
@@ -236,7 +260,7 @@ public class EbudgetDBManager {
      * @param  d2
      * @return InOutSumObj[]
      */
-    public InOutSumObj[] groupPositiveByDescription(java.sql.Date d1, java.sql.Date d2){
+    public InOutSumObj[] groupPositiveByDescription(java.sql.Date d1, java.sql.Date d2) throws NullPointerException{
         ArrayList <InOutSumObj> inOutObjs = new ArrayList<InOutSumObj>();
         // grouping query
         Cursor c1 = budgetDB.query(false, DATABASE_TABLE, new String[] {KEY_DATE, "SUM("+KEY_SUM+")", KEY_DESCR},  "date between ? and ? and " + KEY_SUM + ">0",

@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
@@ -30,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
         // fields
 		final TextView sumView = (TextView) findViewById(R.id.sumField);
-		final TextView descrView = (TextView) findViewById(R.id.descrField);
+		final AutoCompleteTextView descrView = (AutoCompleteTextView) findViewById(R.id.descrField);
 		final Button submitButton = (Button) findViewById(R.id.submitButton);
 		final Button loadButton = (Button) findViewById(R.id.loadButton);
 		final TextView lastRow = (TextView) findViewById(R.id.totalSum);
@@ -38,6 +40,18 @@ public class MainActivity extends ActionBarActivity {
 		final DatePicker lastDate = (DatePicker) findViewById(R.id.lastDate);
 		final Button clearButton = (Button) findViewById(R.id.clearButton);
 		final Button graphicButton = (Button) findViewById(R.id.graphicButton);
+        // array of templates for auto-completing
+        try {
+            dbmngr.open();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+        String[] templates = dbmngr.getAllDescrs();
+
+        // creating adapter
+        ArrayAdapter adapter = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_dropdown_item_1line, templates);
         // pre setup of the Submit's essential mode
 		submitButton.setEnabled(false);
 		// adding listener to the changing of sumView's text
@@ -46,14 +60,14 @@ public class MainActivity extends ActionBarActivity {
 			@Override
 			public void afterTextChanged(Editable arg0) {
 
-				if ((sumView.getText().toString().trim().matches("(-|\\+)?\\d+?")) == false) 
+				if (!(sumView.getText().toString().trim().matches("-?\\d+(\\.\\d{2})?")))
 				{
-					sumView.setError("Please, check your 'sum' for mistakes!");
+					sumView.setError(getResources().getString(R.string.warning_sum_msg));
 					submitButton.setEnabled(false);
 				}
 				if (sumView.getText().toString().isEmpty()) 
 				{
-					sumView.setError("Please, check your 'sum' for mistakes!");
+					sumView.setError(getResources().getString(R.string.warning_sum_msg));
 					submitButton.setEnabled(false);
 				}
 				else {
@@ -74,6 +88,27 @@ public class MainActivity extends ActionBarActivity {
 			}
 
 		});
+
+        // setting auto-completion threshold
+        descrView.setThreshold(1);
+        // settin the listener to the description field
+        descrView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //descrView.performValidation();
+            }
+        });
+        descrView.setAdapter(adapter);
 
 		// "Sumbit" button handler
 		submitButton.setOnClickListener(new OnClickListener() {
@@ -124,7 +159,7 @@ public class MainActivity extends ActionBarActivity {
 				// Counting balance
 				float totalSum = Logic.countSum(dbmngr.getDetSum(dates[0],
 						dates[1]));
-				lastRow.setText("Balance of period: " + totalSum);
+				lastRow.setText(getResources().getString(R.string.balance_text) + totalSum);
 				dbmngr.close();
 
 			}
@@ -138,10 +173,10 @@ public class MainActivity extends ActionBarActivity {
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(
 						MainActivity.this);
-				builder.setTitle("!?Are you sure?!")
-						.setMessage("Are you sure, you want to delete history?")
+				builder.setTitle(getResources().getString(R.string.warning_dialog_icon))
+						.setMessage(getResources().getString(R.string.warning_deletion_msg))
 						.setCancelable(true)
-						.setPositiveButton("Yes",
+						.setPositiveButton(getResources().getString(R.string.yes_button),
 								new DialogInterface.OnClickListener() {
 
 									@Override
@@ -158,7 +193,7 @@ public class MainActivity extends ActionBarActivity {
 										dbmngr.close();
 									}
 								})
-						.setNegativeButton("No",
+						.setNegativeButton(getResources().getString(R.string.no_button),
 								new DialogInterface.OnClickListener() {
 									public void onClick(DialogInterface dialog,
 											int id) {

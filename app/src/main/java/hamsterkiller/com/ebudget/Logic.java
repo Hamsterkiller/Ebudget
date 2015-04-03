@@ -19,14 +19,14 @@ public class Logic {
 	 */
 	public static double[] getSumArray(InOutSumObj[] inOutArray){
 		double[] d;
-		if (inOutArray.length != 0){
+		if (inOutArray != null){
 			d = new double[inOutArray.length];
 			for (int i=0; i<inOutArray.length; i++){
 					d[i]=Double.parseDouble(inOutArray[i].getInOutSum());		
 			}
 		}
 		else {
-			d=new double[0];
+			d=new double[1];
 			d[0]=0;
 		}
 		return d;

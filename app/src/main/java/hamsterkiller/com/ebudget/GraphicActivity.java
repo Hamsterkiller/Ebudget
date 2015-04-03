@@ -40,7 +40,7 @@ public class GraphicActivity extends ActionBarActivity {
 		final EbudgetDBManager dbmngr = EbudgetDBManager.getInstance(this);
 		// creating LineGraphView object
 		graphicIncome =  new GraphView(this);
-        graphicIncome.setTitle("Income & Outcome");
+        graphicIncome.setTitle(getResources().getString(R.string.linegraph_title));
 		Intent intent = getIntent();
 		date1 = dconv.convertToSql(intent.getLongExtra("date1", 0l));
 		date2 = dconv.convertToSql(intent.getLongExtra("date2", 0l));
@@ -78,7 +78,7 @@ public class GraphicActivity extends ActionBarActivity {
 		graphicIncome.addSeries(grSeries);
 		// generating custom horizontal labels
         graphicIncome.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
-        graphicIncome.getGridLabelRenderer().setNumHorizontalLabels(4);
+        graphicIncome.getGridLabelRenderer().setNumHorizontalLabels(3);
 		// setting the number of vertical labels
 		graphicIncome.getGridLabelRenderer().setNumVerticalLabels(11);
 	    graphicIncome.getViewport().setMaxY(Logic.getMaxAbs(Logic.getSumArray(inOuts)));
@@ -118,7 +118,7 @@ public class GraphicActivity extends ActionBarActivity {
 	// throw an alert with the message
 	public void errornote(){	
 
-        Toast.makeText(this, "No data was found!", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getResources().getString(R.string.no_data_found), Toast.LENGTH_LONG).show();
 	}
 	
 		
