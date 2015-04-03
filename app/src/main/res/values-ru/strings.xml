@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Ebudget</string>
+    <string name="greeting_note">Введитте сумму ("+" - доход, "-" - расход).</string>
+    <string name="description">Введите описание к введенной сумме.</string>
+    <string name="period_selection">Выберите календарный период для анализа: </string>
+    <string name="action_settings">Настройки</string>
+    <string name="min_date">01/01/2013</string>
+    <string name="max_date">01/01/2018</string>
+    <string name="submit_button">Внести</string>
+    <string name="load_button">Баланс</string>
+    <string name="balance_text">Баланс: </string>
+    <string name="clear_button">Удалить все данные</string>
+    <string name="title_activity_graphic">Динамика</string>
+    <string name="graphic_button">Графики</string>
+    <string name="graphic_menu_dynamics">Динамика</string>
+    <string name="graphic_menu_accumulated">Накопленный итог</string>
+    <string name="graphic_menu_go_table">Таблица</string>
+    <string name="title_activity_table">Таблица </string>
+    <string name="undo_button">Отменить</string>
+    <string name="sum_hint">Введите сумму (+/-)</string>
+    <string name="descr_hint">Введите описание</string>
+    <string name="barchart_menu_positive">Доход</string>
+    <string name="barchart_menu_negative">Расход</string>
+    <string name="linegraph_title">Динамика доходов/расходов</string>
+    <string name="no_data_found">Нет данных!</string>
+    <string name="warning_dialog_icon">Вы уверены?</string>
+    <string name="warning_deletion_msg">Вы уверены что хотите удалить все данные?</string>
+    <string name="yes_button">Да</string>
+    <string name="no_button">Нет</string>
+    <string name="warning_sum_msg">Ошибка! Проверьте поле суммы.</string>
+    <string name="more_then_one">Количество категорий затрат должно быть больше чем одна</string>
+    <string name="bar_info_toast">Инфо: </string>
+    <string name="income_title">Доходы</string>
+    <string name="outcome_title">Расходы</string>
+
+</resources>
