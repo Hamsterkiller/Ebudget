@@ -33,6 +33,6 @@
     <string name="more_then_one">Количество категорий затрат должно быть больше чем одна</string>
     <string name="bar_info_toast">Инфо: </string>
     <string name="income_title">Доходы</string>
+    <string name="backUpDB">Сихроизировать</string>
     <string name="outcome_title">Расходы</string>
-
 </resources>

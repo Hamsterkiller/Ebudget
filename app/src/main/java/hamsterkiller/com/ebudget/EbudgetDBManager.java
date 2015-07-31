@@ -11,10 +11,10 @@ import java.lang.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedWriter;
 
 /**
  * Created by Zemskov on 02.07.2014.
@@ -30,12 +30,14 @@ public class EbudgetDBManager {
 	private static final int DATABASE_VERSION = 1;
 	// SQL columns id's and names
 	public static final String KEY_ID = "_id";
+    private static final int ID_COLUMN = 0;
 	private static final String KEY_SUM = "sum";
 	private static final int SUM_COLUMN = 1;
 	private static final String KEY_DESCR = "description";
 	private static final int DESCR_COLUMN = 2;
 	private static final String KEY_DATE = "date";
 	private static final int DATE_COLUMN = 3;
+    private static final String[] COLUMN_NAMES = {KEY_ID, KEY_SUM, KEY_DESCR, KEY_DATE};
 	private static final String DATABASE_CREATE = "create table "
 			+ DATABASE_TABLE + " (" + KEY_ID
 			+ " integer primary key autoincrement, " + KEY_SUM
@@ -149,6 +151,12 @@ public class EbudgetDBManager {
         return templates;
     }
 
+    public Cursor getAll(){
+        Cursor c = budgetDB.query(false, DATABASE_TABLE, new String[] {
+                        KEY_ID, KEY_DATE, KEY_SUM, KEY_DESCR}, null,
+               null, null, null, null, null);
+        return c;
+    }
 
 	// "get all rows between two dates" query
 	public InOutSumObj[] getAllRows(java.sql.Date d1, java.sql.Date d2) throws NullPointerException{
@@ -273,6 +281,38 @@ public class EbudgetDBManager {
                 inOutObjs.add(new InOutSumObj(c1.getString(1), c1.getString(2), c1.getString(0)));
             } while (c1.moveToNext());
         return inOutObjs.toArray(new InOutSumObj[inOutObjs.size()]);
+
+    }
+
+    public String backUpDB() {
+        //MyLog.d(TAG, "backupDatabaseCSV");
+
+        int i = 0;
+        String csvHeader = "";
+        String csvValues = "";
+        // making header
+        for (i = 0; i < COLUMN_NAMES.length; i++) {
+            if (csvHeader.length() > 0) {
+                csvHeader += ",";
+            }
+            csvHeader += "\"" + COLUMN_NAMES[i] + "\"";
+        }
+        csvHeader += "\n";
+        // making body
+        Cursor cursor = getAll();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                csvValues = Long.toString(cursor.getLong(0)) + ",";
+                csvValues += Double.toString(cursor.getDouble(1))
+                        + ",";
+                csvValues += cursor.getString(2)
+                        + ",";
+                csvValues += Long.toString(cursor.getLong(3)) + "\n";
+            }
+        }
+            cursor.close();
+
+            return csvHeader + csvValues;
 
     }
 

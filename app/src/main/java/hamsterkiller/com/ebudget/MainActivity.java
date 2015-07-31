@@ -1,8 +1,15 @@
 package hamsterkiller.com.ebudget;
 
+
+
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.text.ParseException;
+import java.io.File;
+
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +18,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -19,12 +25,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import java.text.ParseException;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
-	// object of EbudgetDBmanager
+
+
+    // object of EbudgetDBmanager
 	final EbudgetDBManager dbmngr = EbudgetDBManager.getInstance(this);
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +49,9 @@ public class MainActivity extends ActionBarActivity {
 		final DatePicker lastDate = (DatePicker) findViewById(R.id.lastDate);
 		final Button clearButton = (Button) findViewById(R.id.clearButton);
 		final Button graphicButton = (Button) findViewById(R.id.graphicButton);
+        final Button backUpButton = (Button) findViewById(R.id.backUpButton);
+
+
         // array of templates for auto-completing
         try {
             dbmngr.open();
@@ -217,6 +229,18 @@ public class MainActivity extends ActionBarActivity {
 
 		});
 
+        /**
+         * back up button handler
+         */
+        backUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchActivity(".BaseDriveActivity");
+            }
+        });
+
+
+
 	}
 
     /**
@@ -290,6 +314,19 @@ public class MainActivity extends ActionBarActivity {
 		startActivity(intent);
 	}
 
+    // start DriveActivity
+    public void launchActivity (String activityName){
+        // creating an intent
+        Intent intent = new Intent();
+        //intent.setClassName("hamsterkiller.com.ebudget", activityName);
+        intent.setClassName(this.getPackageName(), activityName);
+        try {
+            startActivity(new Intent (this, BaseDriveActivity.class));
+        }
+        catch(ActivityNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -316,5 +353,6 @@ public class MainActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 
 }

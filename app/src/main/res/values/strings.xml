@@ -34,5 +34,8 @@
     <string name="bar_info_toast">Info: </string>
     <string name="income_title">Income</string>
     <string name="outcome_title">Outcome</string>
+    <string name="title_activity_base_drive">BaseDriveActivity</string>
+    <string name="backUpDB">Back Up DB</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
